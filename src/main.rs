@@ -1,6 +1,6 @@
 use async_std::net::{ToSocketAddrs, TcpStream};
 use async_std::io;
-use async_std::prelude::*;
+use async_std::prelude::*;  // we need this to use stream methods like read() and write_all()
 
 // RESP - Redis Serialization Protocol
 // https://redis.io/topics/protocol
@@ -56,7 +56,7 @@ impl Client {
 
         let bytes_read = self.stream.read(&mut buffer).await?;
         let resp = parse_response(&buffer[..bytes_read])?;
-        Ok(resp.to_owned())
+        Ok(resp.to_owned())  // create owned data from borrowed data
     }
 
     async fn set(&mut self, key: String, value: String) -> Result<(), Error> {
